@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    ServerName {{ inventory_hostname }}
+    ServerAlias www.{{ inventory_hostname }}
+    DocumentRoot "/var/www/{{ inventory_hostname }}"
+
+    <Directory "/var/www/{{ inventory_hostname }}">
+        AllowOverride All
+    </Directory>
+</VirtualHost>

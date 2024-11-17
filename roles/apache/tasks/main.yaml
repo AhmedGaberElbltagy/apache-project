@@ -1,0 +1,39 @@
+- name: Ensure Apache is installed
+  package:
+    name: "{{ httpd }}"
+    state: present
+
+- name: Create DocumentRoot
+  file:
+    path: "/var/www/{{ inventory_hostname }}"
+    state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: 0755
+
+- name: Create private directory
+  file:
+    path: "/var/www/{{ inventory_hostname }}/private"
+    state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: 0755
+
+- name: Create virtual host configuration
+  template:
+    src: virtualhost.conf.j2
+    dest: "{{ apache_config_dir }}/{{ inventory_hostname }}.conf"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: 0644
+  notify: Restart Apache
+
+- name: Create .htaccess file
+  template:
+    src: htaccess.j2
+    dest: "/var/www/{{ inventory_hostname }}/.htaccess"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: 0644
+  notify: Restart Apache
+

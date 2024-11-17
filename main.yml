@@ -1,0 +1,5 @@
+- name: Deploy Virtual Hosts
+  hosts: webservers
+  become: yes
+  roles:
+    - apache
